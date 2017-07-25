@@ -63,10 +63,11 @@ public class CatalogActivity extends AppCompatActivity {
 
         mDbHelper = new PetDbHelper(this);
     }
-        @Override
-        protected void onStart() {
-            super.onStart();
-            displayDatabaseInfo();
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        displayDatabaseInfo();
 
     }
 
@@ -79,16 +80,47 @@ public class CatalogActivity extends AppCompatActivity {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         // Perform this raw SQL query "SELECT * FROM pets"
-        // to get a Cursor that contains all rows from the pets table.
-        Cursor cursor = db.rawQuery("SELECT * FROM " + PetEntry.TABLE_NAME, null);
-//part of a test to display data
-//        String[] projection = {PetEntry.COLUMN_NAME_id, PetEntry.COLUMN_PET_NAME, PetEntry.COLUMN_PET_BREED, PetEntry.COLUMN_PET_GENDER, PetEntry.COLUMN_PET_WEIGHT,};
+//        // to get a Cursor that contains all rows from the pets table.
+//        Cursor cursor = db.rawQuery("SELECT * FROM " + PetEntry.TABLE_NAME, null);
 
+
+//part of a test to display data
+        String[] projection = {PetEntry.COLUMN_NAME_id, PetEntry.COLUMN_PET_NAME, PetEntry.COLUMN_PET_BREED, PetEntry.COLUMN_PET_GENDER, PetEntry.COLUMN_PET_WEIGHT,};
+
+        Cursor cursor = db.query(PetEntry.TABLE_NAME, projection, null, null, null, null, null);
         try {
             // Display the number of rows in the Cursor (which reflects the number of rows in the
             // pets table in the database).
             TextView displayView = (TextView) findViewById(R.id.text_view_pet);
-            displayView.setText("Number of rows in pets database table: " + cursor.getCount());
+            displayView.setText("Number of rows in pets database table: " + cursor.getCount()+ " pets"+"\n\n");
+
+            displayView.append((PetEntry._ID+" | "+PetEntry.COLUMN_PET_NAME+ " | "+PetEntry.COLUMN_PET_BREED+" | "+PetEntry.COLUMN_PET_GENDER+" | "+PetEntry.COLUMN_PET_WEIGHT+"\n"));
+
+            int idColumnIndex = cursor.getColumnIndex(PetEntry._ID);
+            int nameColumnIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_NAME);
+            int breedColumnIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_BREED);
+            int genderColumnIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_GENDER);
+            int weightColumIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_WEIGHT);
+
+            while (cursor.moveToNext()) {
+
+                int currentID = cursor.getInt(idColumnIndex);
+                String currentName = cursor.getString(nameColumnIndex);
+                String currentBreed = cursor.getString(breedColumnIndex);
+                String currentGender = cursor.getString(genderColumnIndex);
+
+                switch (currentGender){
+                    case "0": currentGender="Male";break;
+                    case "1": currentGender="Female";break;
+                    case "2": currentGender="unKnown";break;
+                }
+
+                String currentWeight = cursor.getString(weightColumIndex);
+
+                displayView.append(("\n"+currentID+" | "+currentName+" | "+currentBreed+" | " +currentGender+" | "+currentWeight));
+
+            }
+
 
         } finally {
             // Always close the cursor when you're done reading from it. This releases all its
@@ -111,7 +143,7 @@ public class CatalogActivity extends AppCompatActivity {
         Log.v("catalog", "new row id: " + newRowId);
 
         //displays a toast message contraining the line number
-        Toast.makeText(this,"line "+newRowId+"added",Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "line " + newRowId + "added", Toast.LENGTH_LONG).show();
 
     }
 
