@@ -63,7 +63,6 @@ public class CatalogActivity extends AppCompatActivity {
         displayDatabaseInfo();
 
 
-
 //        PetDbHelper mDbHelper = new PetDbHelper(this);
 //        SQLiteDatabase db = mDbHelper.getReadableDatabase();
     }
@@ -79,11 +78,15 @@ public class CatalogActivity extends AppCompatActivity {
         // Perform this raw SQL query "SELECT * FROM pets"
         // to get a Cursor that contains all rows from the pets table.
         Cursor cursor = db.rawQuery("SELECT * FROM " + PetEntry.TABLE_NAME, null);
+//part of a test to display data
+//        String[] projection = {PetEntry.COLUMN_NAME_id, PetEntry.COLUMN_PET_NAME, PetEntry.COLUMN_PET_BREED, PetEntry.COLUMN_PET_GENDER, PetEntry.COLUMN_PET_WEIGHT,};
+
         try {
             // Display the number of rows in the Cursor (which reflects the number of rows in the
             // pets table in the database).
             TextView displayView = (TextView) findViewById(R.id.text_view_pet);
             displayView.setText("Number of rows in pets database table: " + cursor.getCount());
+
         } finally {
             // Always close the cursor when you're done reading from it. This releases all its
             // resources and makes it invalid.
@@ -91,7 +94,7 @@ public class CatalogActivity extends AppCompatActivity {
         }
     }
 
-    private void insertPet(String name,String breed,int gender,int weight){
+    private void insertPet(String name, String breed, int gender, int weight) {
 
 
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -101,8 +104,8 @@ public class CatalogActivity extends AppCompatActivity {
         values.put(PetEntry.COLUMN_PET_GENDER, gender);
         values.put(PetEntry.COLUMN_PET_WEIGHT, weight);
 
-        long newRowId = db.insert(PetContract.PetEntry.TABLE_NAME,null,values);
-        Log.v("catalog","new row id: "+newRowId);
+        long newRowId = db.insert(PetContract.PetEntry.TABLE_NAME, null, values);
+        Log.v("catalog", "new row id: " + newRowId);
 
     }
 
@@ -123,7 +126,7 @@ public class CatalogActivity extends AppCompatActivity {
             case R.id.action_insert_dummy_data:
                 // Do nothing for now
 
-        insertPet("toto","saint bernard",PetContract.PetEntry.GENDER_MALE,10);
+                insertPet("toto", "saint bernard", PetContract.PetEntry.GENDER_MALE, 10);
                 displayDatabaseInfo();
                 return true;
             // Respond to a click on the "Delete all entries" menu option
