@@ -26,12 +26,11 @@ public class PetDbHelper extends SQLiteOpenHelper{
         //create table was made in petContract, so im just using the same reference to allow for easier code refactor later
         String SQL_CREATE_PETS_TABLE = PetContract.getSQL_create_entries();
 
-        try {
-            db.execSQL(SQL_CREATE_PETS_TABLE);
-        } catch (SQLException e) {
-            Log.e(LOG_TAG,SQL_CREATE_PETS_TABLE,e);
-        }
+
+        db.execSQL(SQL_CREATE_PETS_TABLE);
+
     }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

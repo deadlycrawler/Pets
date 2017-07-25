@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/testText1"
         android:textSize="20dp"
-        android:text="test"/>
+        tools:text="test"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
