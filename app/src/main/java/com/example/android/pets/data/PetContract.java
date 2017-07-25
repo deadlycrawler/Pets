@@ -34,11 +34,13 @@ public final class PetContract {
 
     private static final String SQL_create_entries = "CREATE TABLE " + TABLE_NAME +
             "(" +
-            COLUMN_NAME_id + "INTEGER" + ", " +
-            COLUMN_PET_NAME + "TEXT" + ", " +
-            COLUMN_PET_BREED + "TEXT" + ", " +
-            COLUMN_PET_GENDER + "INTEGER" + ", " +
-            COLUMN_PET_WEIGHT + "INTEGER" + ")";
+            COLUMN_NAME_id + " INTEGER PRIMARY KEY AUTOINCREMENT" + ", " +
+            COLUMN_PET_NAME + " TEXT NOT NULL" + ", " +
+            COLUMN_PET_BREED + " TEXT" + ", " +
+            COLUMN_PET_GENDER + " INTEGER NOT NULL" + ", " +
+            COLUMN_PET_WEIGHT + " INTEGER NOT NULL DEFAULT 0" + ");";
 
-
+    public static String getSQL_create_entries() {
+        return SQL_create_entries;
+    }
 }
