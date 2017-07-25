@@ -15,10 +15,13 @@
  */
 package com.example.android.pets;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,8 +29,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.example.android.pets.data.PetContract;
 import com.example.android.pets.data.PetContract.PetEntry;
+import com.example.android.pets.data.PetDbHelper;
 
 /**
  * Allows user to create a new pet or edit an existing one.
@@ -45,7 +51,6 @@ public class EditorActivity extends AppCompatActivity {
 
     /** EditText field to enter the pet's gender */
     private Spinner mGenderSpinner;
-
     /**
      * Gender of the pet. The possible values are:
      * 0 for unknown gender, 1 for male, 2 for female.
@@ -105,6 +110,31 @@ public class EditorActivity extends AppCompatActivity {
         });
     }
 
+    private void insertPet(){
+        String NameEditText = mNameEditText.getText().toString().trim();
+        String BreedEditText = mBreedEditText.getText().toString().trim();
+        int GenderSpinnerText = mGender;
+        int weightEditText = Integer.parseInt(mWeightEditText.getText().toString());
+
+//                Toast.makeText(this,NameEditText+BreedEditText+GenderSpinnerText+weightEditText,Toast.LENGTH_LONG).show();
+            PetDbHelper mDbHelper = new PetDbHelper(this);
+            SQLiteDatabase db = mDbHelper.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(PetEntry.COLUMN_PET_NAME, NameEditText);
+            values.put(PetEntry.COLUMN_PET_BREED, BreedEditText);
+            values.put(PetEntry.COLUMN_PET_GENDER, GenderSpinnerText);
+            values.put(PetEntry.COLUMN_PET_WEIGHT, weightEditText);
+
+            long newRowId = db.insert(PetContract.PetEntry.TABLE_NAME, null, values);
+            Log.v("catalog", "new row id: " + newRowId);
+
+            //displays a toast message contraining the line number
+            Toast.makeText(this,"line "+newRowId+" added",Toast.LENGTH_LONG).show();
+
+        }
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu options from the res/menu/menu_editor.xml file.
@@ -119,7 +149,9 @@ public class EditorActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
-                // Do nothing for now
+                insertPet();
+                //finish will exit the activity and go back to catalog
+                finish();
                 return true;
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:

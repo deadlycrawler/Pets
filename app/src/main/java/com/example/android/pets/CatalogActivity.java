@@ -59,12 +59,15 @@ public class CatalogActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
         mDbHelper = new PetDbHelper(this);
-        displayDatabaseInfo();
+    }
+        @Override
+        protected void onStart() {
+            super.onStart();
+            displayDatabaseInfo();
 
-
-//        PetDbHelper mDbHelper = new PetDbHelper(this);
-//        SQLiteDatabase db = mDbHelper.getReadableDatabase();
     }
 
     /**
@@ -106,6 +109,9 @@ public class CatalogActivity extends AppCompatActivity {
 
         long newRowId = db.insert(PetContract.PetEntry.TABLE_NAME, null, values);
         Log.v("catalog", "new row id: " + newRowId);
+
+        //displays a toast message contraining the line number
+        Toast.makeText(this,"line "+newRowId+"added",Toast.LENGTH_LONG).show();
 
     }
 
