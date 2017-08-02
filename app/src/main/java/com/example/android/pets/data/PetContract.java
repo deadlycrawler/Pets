@@ -1,6 +1,7 @@
 package com.example.android.pets.data;
 
 
+import android.net.Uri;
 import android.provider.BaseColumns;
 
 import static com.example.android.pets.data.PetContract.PetEntry.COLUMN_PET_BREED;
@@ -15,6 +16,9 @@ public final class PetContract {
     }
 
     public static final class PetEntry implements BaseColumns {
+        //content URI to access the petsProvider
+        public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_PETS);
+
         //table and column names as constraints
         public static final String TABLE_NAME = "pets";
 
@@ -30,6 +34,10 @@ public final class PetContract {
         public static final int GENDER_FEMALE = 1;
         public static final int GENDER_UNKNOWN = 2;
     }
+    //content constants
+    public static final String CONTENT_AUTHORITY ="com.example.android.pets";
+    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+    public static final String PATH_PETS = PetEntry.TABLE_NAME;
 
 
     private static final String SQL_create_entries = "CREATE TABLE " + TABLE_NAME +
