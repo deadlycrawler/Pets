@@ -17,6 +17,7 @@ package com.example.android.pets;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -114,22 +115,21 @@ public class EditorActivity extends AppCompatActivity {
         String NameEditText = mNameEditText.getText().toString().trim();
         String BreedEditText = mBreedEditText.getText().toString().trim();
         int GenderSpinnerText = mGender;
-        int weightEditText = Integer.parseInt(mWeightEditText.getText().toString());
+        int weightEditText = 0;
+        weightEditText = Integer.parseInt(mWeightEditText.getText().toString());
+
 
 //                Toast.makeText(this,NameEditText+BreedEditText+GenderSpinnerText+weightEditText,Toast.LENGTH_LONG).show();
-            PetDbHelper mDbHelper = new PetDbHelper(this);
-            SQLiteDatabase db = mDbHelper.getWritableDatabase();
-            ContentValues values = new ContentValues();
+
+
+        ContentValues values = new ContentValues();
             values.put(PetEntry.COLUMN_PET_NAME, NameEditText);
             values.put(PetEntry.COLUMN_PET_BREED, BreedEditText);
             values.put(PetEntry.COLUMN_PET_GENDER, GenderSpinnerText);
             values.put(PetEntry.COLUMN_PET_WEIGHT, weightEditText);
 
-            long newRowId = db.insert(PetContract.PetEntry.TABLE_NAME, null, values);
-            Log.v("catalog", "new row id: " + newRowId);
+        Uri newUri = getContentResolver().insert(PetEntry.CONTENT_URI,values);
 
-            //displays a toast message contraining the line number
-            Toast.makeText(this,"line "+newRowId+" added",Toast.LENGTH_LONG).show();
 
         }
 

@@ -19,6 +19,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -58,7 +59,6 @@ public class CatalogActivity extends AppCompatActivity {
         });
 
 
-        mDbHelper = new PetDbHelper(this);
     }
 
     @Override
@@ -71,7 +71,6 @@ public class CatalogActivity extends AppCompatActivity {
 
     private void displayDatabaseInfo() {
         // Create and/or open a database to read from it
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         // Perform this raw SQL query "SELECT * FROM pets"
 //        // to get a Cursor that contains all rows from the pets table.
@@ -81,7 +80,10 @@ public class CatalogActivity extends AppCompatActivity {
 //part of a test to display data
         String[] projection = {PetEntry.COLUMN_NAME_id, PetEntry.COLUMN_PET_NAME, PetEntry.COLUMN_PET_BREED, PetEntry.COLUMN_PET_GENDER, PetEntry.COLUMN_PET_WEIGHT,};
 
-        Cursor cursor = db.query(PetEntry.TABLE_NAME, projection, null, null, null, null, null);
+//        Cursor cursor = db.query(PetEntry.TABLE_NAME, projection, null, null, null, null, null);
+      Cursor cursor =  getContentResolver().query(PetEntry.CONTENT_URI,projection,null,null,null);
+
+
         try {
             // Display the number of rows in the Cursor (which reflects the number of rows in the
             // pets table in the database).
@@ -132,20 +134,19 @@ public class CatalogActivity extends AppCompatActivity {
     private void insertPet(String name, String breed, int gender, int weight) {
 
 
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(PetEntry.COLUMN_PET_NAME, name);
         values.put(PetEntry.COLUMN_PET_BREED, breed);
         values.put(PetEntry.COLUMN_PET_GENDER, gender);
         values.put(PetEntry.COLUMN_PET_WEIGHT, weight);
 
-        long newRowId = db.insert(PetContract.PetEntry.TABLE_NAME, null, values);
-        Log.v("catalog", "new row id: " + newRowId);
+        Uri newUri = getContentResolver().insert(PetEntry.CONTENT_URI,values);
 
         //displays a toast message contraining the line number
-        Toast.makeText(this, "line " + newRowId + "added", Toast.LENGTH_LONG).show();
+
 
     }
+
 
 
     @Override
