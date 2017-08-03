@@ -131,7 +131,7 @@ public class CatalogActivity extends AppCompatActivity {
         }
     }
 
-    private void insertPet(String name, String breed, int gender, int weight) {
+    private void insertPet(String name, String breed, int gender, String weight) {
 
 
         ContentValues values = new ContentValues();
@@ -165,7 +165,7 @@ public class CatalogActivity extends AppCompatActivity {
             case R.id.action_insert_dummy_data:
                 // Do nothing for now
 
-                insertPet("toto", "saint bernard", PetContract.PetEntry.GENDER_MALE, 10);
+                insertPet("toto", "saint bernard", PetContract.PetEntry.GENDER_MALE, "10");
                 displayDatabaseInfo();
                 return true;
             // Respond to a click on the "Delete all entries" menu option

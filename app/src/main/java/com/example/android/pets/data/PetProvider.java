@@ -116,13 +116,20 @@ public class PetProvider extends ContentProvider {
 
         String name = values.getAsString(PetContract.PetEntry.COLUMN_PET_NAME);
         String error = "Pet requires a ";
-        if(name==null)throw new IllegalArgumentException(error+"name");
+        if (name == null) throw new IllegalArgumentException(error + "name");
+
+        Integer gender = values.getAsInteger(PetContract.PetEntry.COLUMN_PET_GENDER);
+        if (gender == null || !PetContract.PetEntry.isValidGender(gender)) {
+            throw new IllegalArgumentException(error + "gender");
+        }
 
         String breed = values.getAsString(PetContract.PetEntry.COLUMN_PET_BREED);
-        if(breed==null) throw new IllegalArgumentException(error + "breed");
+        if (breed == null) throw new IllegalArgumentException(error + "breed");
 
-        int weight = Integer.parseInt(values.getAsString(PetContract.PetEntry.COLUMN_PET_WEIGHT));
-        if(weight<=0) throw new IllegalArgumentException("weight must be greater than 0");
+        Integer weight = values.getAsInteger(PetContract.PetEntry.COLUMN_PET_WEIGHT);
+        if(weight != null && weight <0){
+            throw new IllegalArgumentException(error + "weight");
+        }
 
 
         long id = database.insert(PetContract.PetEntry.TABLE_NAME, null, values);
@@ -137,7 +144,6 @@ public class PetProvider extends ContentProvider {
         Toast.makeText(getContext(), "line " + id + " added ", Toast.LENGTH_LONG).show();
 
         return ContentUris.withAppendedId(uri, id);
-
 
 
     }

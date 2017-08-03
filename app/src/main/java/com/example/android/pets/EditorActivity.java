@@ -115,8 +115,7 @@ public class EditorActivity extends AppCompatActivity {
         String NameEditText = mNameEditText.getText().toString().trim();
         String BreedEditText = mBreedEditText.getText().toString().trim();
         int GenderSpinnerText = mGender;
-        int weightEditText = 0;
-        weightEditText = Integer.parseInt(mWeightEditText.getText().toString());
+        String weightEditText = mWeightEditText.getText().toString().trim();
 
 
 //                Toast.makeText(this,NameEditText+BreedEditText+GenderSpinnerText+weightEditText,Toast.LENGTH_LONG).show();

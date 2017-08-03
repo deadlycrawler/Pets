@@ -12,7 +12,24 @@ import static com.example.android.pets.data.PetContract.PetEntry.COLUMN_PET_WEIG
 import static com.example.android.pets.data.PetContract.PetEntry.TABLE_NAME;
 
 public final class PetContract {
+    //might need to add +"/"+
+    public static final String CONTENT_AUTHORITY = "com.example.android.pets";
+    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+    //content constants
+    public static final String PATH_PETS = PetEntry.TABLE_NAME;
+    private static final String SQL_create_entries = "CREATE TABLE " + TABLE_NAME +
+            "(" +
+            COLUMN_NAME_id + " INTEGER PRIMARY KEY AUTOINCREMENT" + ", " +
+            COLUMN_PET_NAME + " TEXT NOT NULL" + ", " +
+            COLUMN_PET_BREED + " TEXT" + ", " +
+            COLUMN_PET_GENDER + " INTEGER NOT NULL" + ", " +
+            COLUMN_PET_WEIGHT + " INTEGER NOT NULL DEFAULT 0" + ");";
+
     private PetContract() {
+    }
+
+    public static String getSQL_create_entries() {
+        return SQL_create_entries;
     }
 
     public static final class PetEntry implements BaseColumns {
@@ -25,7 +42,7 @@ public final class PetContract {
         public static final String COLUMN_NAME_id = BaseColumns._ID;
         public static final String COLUMN_PET_NAME = "name";
         public static final String COLUMN_PET_BREED = "breed";
-        public static final String COLUMN_PET_GENDER= "gender";
+        public static final String COLUMN_PET_GENDER = "gender";
         public static final String COLUMN_PET_WEIGHT = "weight";
 
 
@@ -33,25 +50,13 @@ public final class PetContract {
         public static final int GENDER_MALE = 0;
         public static final int GENDER_FEMALE = 1;
         public static final int GENDER_UNKNOWN = 2;
-    }
-    //content constants
 
-    //might need to add +"/"+
-    public static final String CONTENT_AUTHORITY ="com.example.android.pets";
-    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
-    public static final String PATH_PETS = PetEntry.TABLE_NAME;
-
-
-    private static final String SQL_create_entries = "CREATE TABLE " + TABLE_NAME +
-            "(" +
-            COLUMN_NAME_id + " INTEGER PRIMARY KEY AUTOINCREMENT" + ", " +
-            COLUMN_PET_NAME + " TEXT NOT NULL" + ", " +
-            COLUMN_PET_BREED + " TEXT" + ", " +
-            COLUMN_PET_GENDER + " INTEGER NOT NULL" + ", " +
-            COLUMN_PET_WEIGHT + " INTEGER NOT NULL DEFAULT 0" + ");";
-
-    public static String getSQL_create_entries() {
-        return SQL_create_entries;
+        public static boolean isValidGender(Integer gender) {
+            if (gender == GENDER_UNKNOWN || gender == GENDER_MALE || gender == GENDER_FEMALE) {
+                return true;
+            }
+            return false;
+        }
     }
 
 
