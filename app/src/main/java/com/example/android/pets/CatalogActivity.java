@@ -143,8 +143,6 @@ public class CatalogActivity extends AppCompatActivity {
         Uri newUri = getContentResolver().insert(PetEntry.CONTENT_URI,values);
 
         //displays a toast message contraining the line number
-
-
     }
 
 
